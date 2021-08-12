@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meme Gen</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/editor.css">
+</head>
+
+<body onload="onInit()">
+    <header>
+        <div class="header-container">
+            <a href="#"><img class="logo" src="icons/logo-2x.png" alt="memegen" /></a>
+            <div class="menu-items flex">
+                <a onclick="onShowGallery()">Gallery</a>
+                <a href="#">About</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="editor">
+            <div class="editor-container">
+                <button class="close-editor" onclick="onCloseImgEditor()">&times</button>
+                <div class="canvas-container">
+                    <canvas></canvas>
+                </div>
+                <div class="controls">
+                    <textarea rows="2" placeholder="Enter Text"></textarea>
+                    <button class="choose-next"></button>
+                    <button class="add-line"></button>
+                    <button class="remove-line"></button>
+                    <button class="larger-font"></button>
+                    <button class="smaller-font"></button>
+                    <button class="font-left"></button>
+                    <button class="font-center"></button>
+                    <button class="font-right"></button>
+                    <button class="share orange-btn">Share</button>
+
+                </div>
+            </div>
+        </section>
+
+        <section class="gallery">
+            <div class="gallery-container"></div>
+        </section>
+
+        <section class="about flex">
+            <img src="img/4.jpg" alt="">
+            <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Blanditiis veritatis molestias quas? Alias
+                eaque dolore deserunt pariatur modi optio quas, praesentium perspiciatis excepturi, similique sed
+                numquam, cupiditate eligendi voluptatibus enim!</p>
+            <!-- <div class="social">
+                <a href="#" class="facebook">f</a>
+                <a href="#" class="linkedin">L</a>
+                <a href="#" class="github">G</a>
+            </div> -->
+        </section>
+    </main>
+
+    <footer class="flex">
+        <img class="logo" src="icons/logo-2x.png" alt="memegen" />
+        <small>All rights reserved</small>
+    </footer>
+
+    <script src="js/service/gallery.service.js"></script>
+    <script src="js/service/meme.service.js"></script>
+    <script src="js/service/canvas.service.js"></script>
+    <script src="js/main-controller.js"></script>
+</body>
+
+</html>
