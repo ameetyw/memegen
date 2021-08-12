@@ -15,7 +15,7 @@
         <div class="header-container">
             <a href="#"><img class="logo" src="icons/logo-2x.png" alt="memegen" /></a>
             <div class="menu-items flex">
-                <a onclick="onShowGallery()">Gallery</a>
+                <a href="#" onclick="onShowGallery()">Gallery</a>
                 <a href="#">About</a>
             </div>
         </div>
@@ -24,12 +24,14 @@
     <main>
         <section class="editor">
             <div class="editor-container">
-                <button class="close-editor" onclick="onCloseImgEditor()">&times</button>
+                <button class="close-editor" onclick="onShowGallery()">&times</button>
                 <div class="canvas-container">
                     <canvas></canvas>
                 </div>
                 <div class="controls">
                     <textarea rows="2" placeholder="Enter Text"></textarea>
+                    <button class="move-up"></button>
+                    <button class="move-down"></button>
                     <button class="choose-next"></button>
                     <button class="add-line"></button>
                     <button class="remove-line"></button>

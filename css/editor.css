@@ -50,7 +50,7 @@ canvas {
     justify-items: center;
     grid-template-areas: 
         "txt txt txt txt txt"
-        ". next add remove ."
+        "up down next add remove"
         "larger smaller left center right"
         "font font font width color"
         "stickers stickers stickers stickers stickers"
@@ -77,6 +77,16 @@ canvas {
 
 .controls button:hover:not(.share) {
     border: 2px solid darkgrey;
+}
+
+.controls .move-up {
+    grid-area: up;
+    background-image: url(../icons/up-arrow.png);
+}
+
+.controls .move-down {
+    grid-area: down;
+    background-image: url(../icons/down-arrow.png);
 }
 
 .controls .choose-next {
