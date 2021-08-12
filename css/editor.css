@@ -81,42 +81,42 @@ canvas {
 
 .controls .choose-next {
     grid-area: next;
-    background-image: url(/icons/up-and-down-opposite-double-arrows-side-by-side.png);
+    background-image: url(../icons/up-and-down-opposite-double-arrows-side-by-side.png);
 }
 
 .controls .add-line {
     grid-area: add;
-    background-image: url(/icons/add.png);
+    background-image: url(../icons/add.png);
 }
 
 .controls .remove-line {
     grid-area: remove;
-    background-image: url(/icons/trash.png);
+    background-image: url(../icons/trash.png);
 }
 
 .controls .larger-font {
     grid-area: larger;
-    background-image: url(/icons/increase\ font\ -\ icon.png);
+    background-image: url(../icons/increase\ font\ -\ icon.png);
 }
 
 .controls .smaller-font {
     grid-area: smaller;
-    background-image: url(/icons/decrease\ font\ -\ icon.png);
+    background-image: url(../icons/decrease\ font\ -\ icon.png);
 }
 
 .controls .font-left {
     grid-area: left;
-    background-image: url(/icons/align-to-left.png);
+    background-image: url(../icons/align-to-left.png);
 }
 
 .controls .font-center {
     grid-area: center;
-    background-image: url(/icons/center-text-alignment.png);
+    background-image: url(../icons/center-text-alignment.png);
 }
 
 .controls .font-right {
     grid-area: right;
-    background-image: url(/icons/align-to-right.png);
+    background-image: url(../icons/align-to-right.png);
 }
 
 .controls .share {
