@@ -1,40 +1,55 @@
 'use strict'
 
-let gElCanvas
-let gCtx
+const gElCanvas = document.querySelector('canvas')
+const gSectionNames = ['gallery', 'editor', 'saved-memes']
+const gTouchEvs = ['touchstart', 'touchmove', 'touchend']
+let gLastSelectedFont
+let gStartPos
+
 
 function onInit() {
-    // document.querySelector('.editor').style.display = 'none'
     createImages()
     renderGallery()
+    loadSavedMemes()
 }
 
 function renderGallery() {
     let images = getImages()
     let strHtmls = images.map(img => {
-        return `<img class="gallery-img" src="${img.imgUrl}" alt="img${img.id}" onclick="onOpenImgEditor(${img.id})" />`
+        return `<img class="gallery-img" src="${img.imgUrl}" alt="img${img.id}" onclick="onOpenNewMeme(${img.id})" />`
     })
     document.querySelector('.gallery-container').innerHTML = strHtmls.join('')
 }
 
-function onOpenImgEditor(imgId) {
-    onShowEditor()
-    onOpenCanvas(imgId)
-}
-
-function onOpenCanvas(imgId) {
-    gElCanvas = document.querySelector('canvas')
-    gCtx = gElCanvas.getContext('2d')
-    initCanvas(imgId)
-    addListeners()
-}
-
-function initCanvas(imgId) {
+function onOpenNewMeme(imgId) {
+    onShowSection('editor')
+    initCanvas()
     resizeCanvas()
     initMeme(imgId)
-    renderLineText()
-    // renderCanvas()
+    renderCanvas()
+    gElCanvas.style.cursor = 'grab'
 }
+
+function onShowSection(sectionName) {
+    gSectionNames.forEach(section => {
+        const elSection = document.querySelector(`.${section}`)
+        if (section === sectionName) {
+            if (elSection.classList.contains('hidden')) {
+                elSection.classList.remove('hidden')
+            }
+        } else if (!elSection.classList.contains('hidden')) elSection.classList.add('hidden')
+    })
+    if (sectionName === 'editor') {
+        document.querySelector('.controls textarea').value = ''
+        onChangeCanvasListeners('ON')
+    }
+    else {
+        onChangeCanvasListeners('OFF')
+        if (sectionName === 'saved-memes') onRenderSavedMemes()
+    }
+}
+
+/*** canvas ***/
 
 function resizeCanvas() {
     const elContainer = document.querySelector('.canvas-container')
@@ -42,67 +57,182 @@ function resizeCanvas() {
     gElCanvas.height = gElCanvas.width
 }
 
-function onShowEditor() {
-    document.querySelector('.editor').style.display = 'grid'
-    document.querySelector('.gallery').style.display = 'none'
-    // document.querySelector('.editor').hidden = false
-    // document.querySelector('.gallery').hidden = true
-}
-
-function onShowGallery() {
-    // resetLineInput()
-    document.querySelector('.editor').style.display = 'none'
-    document.querySelector('.gallery').style.display = 'grid'
-    // document.querySelector('.editor').hidden = true
-    // document.querySelector('.gallery').hidden = false
-}
-
-
-
-function addListeners() {
-    // input text
-    const elInputTxt = document.querySelector('.controls textarea')
-    elInputTxt.addEventListener('input', () => editLine(elInputTxt.value))
-    
-    // new line
-    const elAddLine = document.querySelector('.add-line')
-    elAddLine.addEventListener('click', () => {
-        addLine()
-        renderLineText()
-        // resetLineInput()
-    })
-
-    // choose next line
-    const elChooseNext = document.querySelector('.choose-next')
-    elChooseNext.addEventListener('click', () => {
-        selectNextLine()
-        renderLineText()
-    })
-    
-    // font size
-    const elLargerFont = document.querySelector('.larger-font')
-    elLargerFont.addEventListener('click', () => changeFontSize(5))
-    const elSmallerFont = document.querySelector('.smaller-font')
-    elSmallerFont.addEventListener('click', () => changeFontSize(-5))
-    
-    // move text vertically
-    const elMoveUp = document.querySelector('.move-up')
-    elMoveUp.addEventListener('click', () => moveLineVertical(-5))
-    const elMoveDown = document.querySelector('.move-down')
-    elMoveDown.addEventListener('click', () => moveLineVertical(5))
-    // align text horizontally
-    const elFontLeft = document.querySelector('.font-left')
-    elFontLeft.addEventListener('click', () => alignLine('left'))
-    const elFontCenter = document.querySelector('.font-center')
-    elFontCenter.addEventListener('click', () => alignLine('center'))
-    const elFontRight = document.querySelector('.font-right')
-    elFontRight.addEventListener('click', () => alignLine('right'))
-}
-
-function renderLineText() {
-    document.querySelector('.controls textarea').value = getLineText()
+function getCanvas() {
+    return gElCanvas
 }
 
 function getCanvasSize() {
     return gElCanvas.width
+}
+
+/*** edit meme ***/
+
+function onEditLine(txt) {
+    if (isLineSelected()) {
+        editLine(txt)
+        renderCanvas()
+    }
+}
+
+function onMoveLineUp() {
+    if (isLineSelected()) {
+        moveLineVertical(-5)
+        renderCanvas()
+    }
+}
+
+function onMoveLineDown() {
+    if (isLineSelected()) {
+        moveLineVertical(5)
+        renderCanvas()
+    }
+}
+
+function onSelectNextLine() {
+    selectNextLine()
+    renderCanvas()
+    renderMemeControls()
+}
+
+function onAddLine() {
+    addLine()
+    renderCanvas()
+    renderMemeControls()
+}
+
+function onRemoveLine() {
+    if (isLineSelected()) {
+        removeLine()
+        renderCanvas()
+        renderMemeControls()
+    }
+}
+
+function onChangeFontSize(changeType) {
+    if (isLineSelected()) {
+        changeFontSize(changeType)
+        renderCanvas()
+    }
+}
+
+function onAlignLine(direction) {
+    if (isLineSelected()) {
+        alignLine(direction)
+        renderCanvas()
+    }
+}
+
+function onChangeFontStyle(fontStyle) {
+    if (isLineSelected()) {
+        changeFontStyle(fontStyle)
+        renderCanvas()
+    }
+}
+
+function onChangeBorderColor(color) {
+    if (isLineSelected()) {
+        changeBorderColor(color)
+        renderCanvas()
+    }
+}
+
+function onChangeFontColor(color) {
+    if (isLineSelected()) {
+        changeFontColor(color)
+        renderCanvas()
+    }
+}
+
+function onSaveMeme() {
+    const elSaveBtn = document.querySelector('.save-meme')
+    elSaveBtn.innerText = 'Saved!'
+    setTimeout(() => elSaveBtn.innerText = 'Save', 700)
+    saveMemeDataURL()
+    saveMemeToStorage()
+}
+
+function renderMemeControls() {
+    renderLineText()
+    renderSelectFont()
+}
+
+function renderLineText() {
+    document.querySelector('.controls textarea').value = getCurrLineText()
+}
+
+function renderSelectFont() {
+    document.querySelector('.choose-font').value = getCurrLineFont()
+}
+
+/**** canvas listeners ****/
+
+function onChangeCanvasListeners(action) {
+    if (action === 'ON') {
+        gElCanvas.addEventListener('touchstart', onDown)
+        gElCanvas.addEventListener('touchend', onUp)
+        gElCanvas.addEventListener('mousedown', onDown)
+        gElCanvas.addEventListener('mouseup', onUp)
+    } else {
+        gElCanvas.removeEventListener('touchstart', onDown)
+        gElCanvas.removeEventListener('touchend', onUp)
+        gElCanvas.removeEventListener('mousedown', onDown)
+        gElCanvas.removeEventListener('mouseup', onUp)
+    }
+}
+
+function onDown(ev) {
+    gElCanvas.addEventListener('touchmove', onMove)
+    gElCanvas.addEventListener('mousemove', onMove)
+
+    gStartPos = getEvPos(ev)
+    doClick(gStartPos)
+    renderCanvas()
+    renderMemeControls()
+}
+
+function onMove(ev) {
+    if (!isLineSelected()) return
+    gElCanvas.style.cursor = 'grabbing'
+    const pos = getEvPos(ev)
+    const dx = pos.x - gStartPos.x
+    const dy = pos.y - gStartPos.y
+    moveLine(dx, dy)
+    renderCanvas()
+    gStartPos = pos
+}
+
+function onUp() {
+    gElCanvas.removeEventListener('touchmove', onMove)
+    gElCanvas.removeEventListener('mousemove', onMove)
+    gElCanvas.style.cursor = 'grab'
+
+}
+
+function getEvPos(ev) {
+    var pos = {
+        x: ev.offsetX,
+        y: ev.offsetY
+    }
+    if (gTouchEvs.includes(ev.type)) {
+        ev.preventDefault()
+        ev = ev.changedTouches[0]
+        pos = {
+            x: ev.pageX - ev.target.offsetLeft - ev.target.clientLeft,
+            y: ev.pageY - ev.target.offsetTop - ev.target.clientTop
+        }
+    }
+    return pos
+}
+
+function onToggleShareModal() {
+    const elScreen = document.querySelector('.screen')
+    elScreen.hidden = !elScreen.hidden;
+    const elModal = document.querySelector('.share-modal')
+    elModal.hidden = !elModal.hidden;
+}
+
+function onDownloadMeme(elLink) {
+    saveMemeDataURL()
+    elLink.href = getMemeDataURL()
+    onToggleShareModal()
 }

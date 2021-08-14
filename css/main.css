@@ -4,8 +4,8 @@
 }
 
 @font-face {
-    font-family: Montserrat-Med;
-    src: url(../fonts/Montserrat-Medium.ttf);
+    font-family: Montserrat-SemiBold;
+    src: url(../fonts/Montserrat-SemiBold.ttf);
 }
 
 @font-face {
@@ -13,16 +13,22 @@
     src: url(../fonts/impact.ttf);
 }
 
+@font-face {
+    font-family: Asakim;
+    src: url(../fonts/Asakim.ttf);
+}
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    font-family: Montserrat-Reg;
+    font-family: Montserrat-Reg, Arial, Helvetica, sans-serif;
     font-size: 1rem;
 }
 
 button {
-    background-color: white;
+    /* background-color: #ff7f00; */
+    /* color: white; */
     border: none;
     border-radius: 1em;
     display: flex;
@@ -32,14 +38,28 @@ button {
 
 button:hover {
     cursor: pointer;
-    font-weight: bold;
+    color: black;
+}
+
+a:hover {
+    cursor: pointer;
 }
 
 body {
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+}
+
+/* LAYOUT */
+
+.main-layout {
+    max-width: 900px;
+}
+
+.screen {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.6);
 }
 
 /* HEADER */
@@ -51,11 +71,8 @@ header {
 
 .header-container {
     margin: 0 auto;
-    display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding-left: 20px;
-    max-width: 1000px;
+    padding: 0 20px;
 }
 
 .logo {
@@ -63,7 +80,7 @@ header {
 }
 
 .menu-items {
-    padding: 10px 15px;
+    padding: 10px 0;
 }
 
 .menu-items a {
@@ -74,7 +91,7 @@ header {
 }
 
 .menu-items a:hover {
-    font-family: Montserrat-Med;
+    color:black;
 }
 
 .menu-items a:last-child {
@@ -90,29 +107,27 @@ header {
     }
 }
 
-/* GALLERY */
+/* GALLERY, SAVED MEMES */
 
-.gallery {
+.gallery, .saved-memes {
     background-color: #e3e3e3;
-    padding: 20px 0;
-    width: 100%;
 }
 
-.gallery-container {
-    display: grid;
-    justify-content: center;
+.gallery-container, .memes-container {
+    padding: 20px 15px;
     grid-template-columns: repeat(2, 47%);
     gap: 7px;
 }
 
-@media (min-width: 700px) {
-    .gallery {
-        display: flex;
-        justify-content: center;
-    }
-    .gallery-container {
-        max-width: 1000px;
+@media (min-width: 500px) {
+    .gallery-container, .memes-container {
         grid-template-columns: repeat(3, 30%);
+    }
+}
+
+@media (min-width: 800px) {
+    .gallery-container, .memes-container {
+        grid-template-columns: repeat(4, 24%);
     }
 }
 
@@ -124,35 +139,39 @@ header {
 
 .gallery-img:hover {
     cursor: pointer;
-    border: 2px solid #e3e3e3;
+    border: 3px solid #e3e3e3;
 }
 
 /* ABOUT */
 
 .about {
-    margin: 20px 2em 40px 2em;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin: 30px;
     text-align: center;
-    max-width: 900px;
 }
 
 .about img {
-    margin: 20px;
     border-radius: 50%;
-    width: 40%;
+    width: 50%;
 }
 
-@media (min-width: 700px) {
+.about h1 {
+    font-family: Montserrat-SemiBold;
+    font-size: 1.5em;
+}
+
+@media (min-width: 600px) {
     .about {
-        margin: 0 30px 10px;
-        flex-direction: row;
+        grid-template-columns: 1fr 2fr;
+        gap: 1.5em;
     }
     .about img {
-        width: 35%;
-        margin: 30px;
+        width: 100%;
+        grid-row: 1/3;
+    }
+    .about h1 {
+        align-self: flex-end;
     }
 }
 
@@ -160,14 +179,41 @@ header {
 
 footer {
     width: 100%;
-    display: flex;
     background-color: #ff7f00;
-    flex-direction: column;
-    align-items: center;
     color: white;
     padding: 60px;
 }
 
 footer .logo {
     margin-bottom: 20px;
+}
+
+
+/* HELPERS */
+
+.flex {
+    display: flex;
+}
+.flex.column {
+    flex-direction: column;
+}
+
+.align-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.grid {
+    display: grid;
+}
+
+.grid.justify-center {
+    justify-items: center;
+}
+
+.hidden {
+    display: none;
 }

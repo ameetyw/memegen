@@ -11,66 +11,93 @@
 </head>
 
 <body onload="onInit()">
+    <div class="screen" hidden></div>
     <header>
-        <div class="header-container">
-            <a href="#"><img class="logo" src="icons/logo-2x.png" alt="memegen" /></a>
+        <div class="header-container main-layout flex align-center">
+            <a href="#" onclick="onShowSection('gallery')"><img class="logo" src="icons/logo-2x.png"
+                    alt="memegen" /></a>
             <div class="menu-items flex">
-                <a href="#" onclick="onShowGallery()">Gallery</a>
+                <a href="#" onclick="onShowSection('gallery')">Gallery</a>
+                <a href="#" onclick="onShowSection('saved-memes')">Memes</a>
                 <a href="#">About</a>
             </div>
         </div>
     </header>
 
     <main>
-        <section class="editor">
-            <div class="editor-container">
-                <button class="close-editor" onclick="onShowGallery()">&times</button>
+        <section class="editor hidden">
+            <div class="editor-container main-layout grid">
+                <button class="close-editor" onclick="onShowSection('gallery')"></button>
                 <div class="canvas-container">
                     <canvas></canvas>
                 </div>
                 <div class="controls">
-                    <textarea rows="2" placeholder="Enter Text"></textarea>
-                    <button class="move-up"></button>
-                    <button class="move-down"></button>
-                    <button class="choose-next"></button>
-                    <button class="add-line"></button>
-                    <button class="remove-line"></button>
-                    <button class="larger-font"></button>
-                    <button class="smaller-font"></button>
-                    <button class="font-left"></button>
-                    <button class="font-center"></button>
-                    <button class="font-right"></button>
-                    <button class="share orange-btn">Share</button>
-
+                    <textarea rows="2" placeholder="Enter Text" oninput="onEditLine(this.value)"></textarea>
+                    <button class="move-up" onclick="onMoveLineUp()"></button>
+                    <button class="move-down" onclick="onMoveLineDown()"></button>
+                    <button class="select-next" onclick="onSelectNextLine()"></button>
+                    <button class="add-line" onclick="onAddLine()"></button>
+                    <button class="remove-line" onclick="onRemoveLine()"></button>
+                    <button class="enlarge-font" onclick="onChangeFontSize('+')"></button>
+                    <button class="reduce-font" onclick="onChangeFontSize('-')"></button>
+                    <button class="font-left" onclick="onAlignLine('left')"></button>
+                    <button class="font-center" onclick="onAlignLine('center')"></button>
+                    <button class="font-right" onclick="onAlignLine('right')"></button>
+                    <select class="choose-font" onchange="onChangeFontStyle(this.value)">
+                        <option value="Impact" class="Impact">Impact</option>
+                        <option value="Asakim" class="Asakim">עסקים</option>
+                        <option value="option3">option3</option>
+                    </select>
+                    <button class="border-color-btn">
+                        <input class="choose-color" type="color" oninput="onChangeBorderColor(this.value)">
+                    </button>
+                    <button class="font-color-btn">
+                        <input class="choose-color" type="color" oninput="onChangeFontColor(this.value)">
+                    </button>
+                    <button class="share-meme orange-btn" onclick="onToggleShareModal()">Share</button>
+                    <button class="save-meme orange-btn" onclick="onSaveMeme()">Save</button>
+                    <button class="remove-meme orange-btn" onclick="onRemoveMeme()"></button>
+                </div>
+                <div class="share-modal" hidden>
+                    <a class="close-modal" onclick="onToggleShareModal()"></a>
+                    <a class="share orange-btn">Share</a>
+                    <a class="download orange-btn" onclick="onDownloadMeme(this)" download="my-meme.jpg">Download</a>
                 </div>
             </div>
         </section>
 
-        <section class="gallery">
-            <div class="gallery-container"></div>
+        <section class="gallery flex justify-center">
+            <div class="gallery-container main-layout grid justify-center"></div>
         </section>
 
-        <section class="about flex">
-            <img src="img/4.jpg" alt="">
+        <section class="saved-memes flex justify-center hidden">
+            <div class="memes-container main-layout grid justify-center"></div>
+        </section>
+
+        <section class="about main-layout grid justify-center">
+            <img src="img/scooter.jpg" alt="">
+            <h1>Amitee Weiner</h1>
             <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Blanditiis veritatis molestias quas? Alias
                 eaque dolore deserunt pariatur modi optio quas, praesentium perspiciatis excepturi, similique sed
                 numquam, cupiditate eligendi voluptatibus enim!</p>
             <!-- <div class="social">
-                <a href="#" class="facebook">f</a>
-                <a href="#" class="linkedin">L</a>
-                <a href="#" class="github">G</a>
-            </div> -->
+                    <a href="#" class="facebook">f</a>
+                    <a href="#" class="linkedin">L</a>
+                    <a href="#" class="github">G</a>
+                </div> -->
         </section>
     </main>
 
-    <footer class="flex">
+    <footer class="flex column align-center">
         <img class="logo" src="icons/logo-2x.png" alt="memegen" />
         <small>All rights reserved</small>
     </footer>
 
+    <script src="js/service/storage.service.js"></script>
     <script src="js/service/gallery.service.js"></script>
     <script src="js/service/meme.service.js"></script>
     <script src="js/service/canvas.service.js"></script>
+    <script src="js/saved-memes-controller.js"></script>
     <script src="js/main-controller.js"></script>
 </body>
 

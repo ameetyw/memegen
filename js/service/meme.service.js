@@ -2,9 +2,14 @@
 
 let gMeme
 let gCurrLine
+let gMemeId
 
 function initMeme(imgId) {
+    gMemeId = getLastIdFromStorage()
+    if (!gMemeId) gMemeId = 0
+
     gMeme = {
+        id: ++gMemeId,
         selectedImgId: imgId,
         selectedLineIdx: -1,
         lines: []
@@ -15,7 +20,8 @@ function initMeme(imgId) {
 function createLine() {
     const line = {
         txt: 'Enter text',
-        fontSize: getCanvasSize() / 10,
+        fontStyle: 'Impact',
+        fontSize: getCanvasSize() / 8,
         align: 'center',
         fontColor: '#ffffff',
         borderColor: '#000000'
@@ -26,7 +32,7 @@ function createLine() {
 
 function setLinePos(line) {
     const canvasSize = getCanvasSize()
-    const lineIdx = gMeme.selectedLineIdx
+    const linesCount = gMeme.lines.length
     if (!line.pos) line.pos = {}
     switch (line.align) {
         case 'center':
@@ -39,15 +45,59 @@ function setLinePos(line) {
             line.pos.x = canvasSize - canvasSize / 15
     }
     if (line.pos.y) return
-    if (!lineIdx) line.pos.y = canvasSize / 7
-    else if (lineIdx === 1) line.pos.y = canvasSize - canvasSize / 8 + line.fontSize / 2
+    if (!linesCount) line.pos.y = canvasSize / 6
+    else if (linesCount === 1) line.pos.y = canvasSize - canvasSize / 8 + line.fontSize / 2
     else line.pos.y = canvasSize / 2 + line.fontSize / 2
+}
+
+function setLineWidth(line, width) {
+    line.width = width
+}
+
+function addLine() {
+    gMeme.lines.push(createLine())
+    gMeme.selectedLineIdx = gMeme.lines.length - 1
+    gCurrLine = gMeme.lines[gMeme.selectedLineIdx]
+}
+
+function removeLine() {
+    gMeme.lines.splice(gMeme.selectedLineIdx, 1)
+    gMeme.selectedLineIdx--
+    selectNextLine()
+}
+
+function changeFontSize(changeType) {
+    let sizeDiff = gCurrLine.fontSize / 10
+    sizeDiff *= (changeType === '+') ? 1 : -1
+    gCurrLine.fontSize += sizeDiff
 }
 
 function alignLine(direction) {
     gCurrLine.align = direction
     setLinePos(gCurrLine)
-    renderCanvas()
+}
+
+function changeFontStyle(fontStyle) {
+    gCurrLine.fontStyle = fontStyle
+}
+
+function changeBorderColor(color) {
+    gCurrLine.borderColor = color
+}
+
+function changeFontColor(color) {
+    gCurrLine.fontColor = color
+}
+
+/*** edit meme ***/
+
+function editLine(txt) {
+    gCurrLine.txt = txt
+    setLinePos(gCurrLine)
+}
+
+function moveLineVertical(diff) {
+    gCurrLine.pos.y += diff
 }
 
 function selectNextLine() {
@@ -55,44 +105,85 @@ function selectNextLine() {
     if (gMeme.selectedLineIdx === gMeme.lines.length) {
         gMeme.selectedLineIdx = -1
         gCurrLine = null
-        return
     }
-    gCurrLine = gMeme.lines[gMeme.selectedLineIdx]
+    else gCurrLine = gMeme.lines[gMeme.selectedLineIdx]
 }
 
-function addLine() {
-    gMeme.selectedLineIdx++
-    gMeme.lines.push(createLine())
-    gCurrLine = gMeme.lines[gMeme.selectedLineIdx]
-    renderCanvas()
+function doClick(pos) {
+    gCurrLine = null
+    gMeme.selectedLineIdx = -1
+    gMeme.lines.some((line, idx) => {
+        if (isLineClicked(line, pos)) {
+            gCurrLine = line
+            gMeme.selectedLineIdx = idx
+            return true
+        }
+        return false
+    })
 }
 
-function editLine(txt) {
-    gCurrLine.txt = txt
-    setLinePos(gCurrLine)
-    renderCanvas()
+function moveLine(dx, dy) {
+    gCurrLine.pos.x += dx
+    gCurrLine.pos.y += dy
 }
+
+function isLineClicked(line, pos) {
+    let xLeft = line.pos.x
+    switch (line.align) {
+        case 'center':
+            xLeft -= line.width / 2
+            break
+        case 'right':
+            xLeft -= line.width
+    }
+    return ((pos.x >= xLeft && pos.x <= xLeft + line.width + 5) &&
+        (pos.y >= line.pos.y - line.fontSize * 0.8 && pos.y <= line.pos.y))
+}
+
+/*** get meme info ***/
 
 function getMeme() {
     return gMeme
 }
 
-function changeFontSize(diff) {
-    gCurrLine.fontSize += diff
-    renderCanvas()
-}
-
-function moveLineVertical(diff) {
-    gCurrLine.pos.y += diff
-    renderCanvas()
-}
-
-function getLineText() {
-    if (!gCurrLine) return '-No line selected-'
-    else if (gCurrLine.txt === 'Enter text') return ''
-    return gCurrLine.txt
+function setMeme(meme) {
+    gMeme = meme
+    gCurrLine = gMeme.lines[0]
 }
 
 function getCurrLine() {
     return gCurrLine
 }
+
+function getCurrLineText() {
+    if (!gCurrLine) return '-No line selected-'
+    else if (gCurrLine.txt === 'Enter text') return ''
+    return gCurrLine.txt
+}
+
+function getCurrLineFont() {
+    if (!gCurrLine) return ''
+    return gCurrLine.fontStyle
+}
+
+function isLineSelected() {
+    return (gCurrLine != null)
+}
+
+/** save meme **/
+
+function saveMemeDataURL() {
+    gMeme.dataURL = getCanvas().toDataURL('image/jpeg')
+}
+
+function getMemeDataURL() {
+    return gMeme.dataURL
+}
+
+// function getLastMemeId() {
+//     return gMemeId
+// }
+
+// function setLastMemeId(id) {
+//     gMemeId = id
+// }

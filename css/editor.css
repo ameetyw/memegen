@@ -1,13 +1,11 @@
 /* EDITOR */
 
 .editor {
-    display: none;
-    padding: 10px;
     background-color: #e3e3e3;
 }
 
 .editor-container {
-    display: grid;
+    padding: 10px;
     grid-template-columns: 1fr;
 }
 
@@ -22,13 +20,16 @@
     margin-inline-end: 10px;
 }
 
+.close-editor::after {
+    content: "\2715";
+}
+
 canvas {
     border: 1px solid black;
 }
 
 @media (min-width: 550px) {
     .editor-container {
-        max-width: 1000px;
         grid-template-columns: 50% 50%;
     }
     .close-editor {
@@ -48,13 +49,7 @@ canvas {
     grid-template-columns: repeat(5, 1fr);
     gap: 7px;
     justify-items: center;
-    grid-template-areas: 
-        "txt txt txt txt txt"
-        "up down next add remove"
-        "larger smaller left center right"
-        "font font font width color"
-        "stickers stickers stickers stickers stickers"
-        ". share share share .";
+    grid-template-areas: "txt txt txt txt txt" "move-up move-down select-next add remove" "larger smaller left center right" "font font font border-color font-color" "stickers stickers stickers stickers stickers" "share share save save remove-meme";
 }
 
 .controls textarea {
@@ -65,32 +60,32 @@ canvas {
     resize: none;
     padding: 10px;
 }
+
 .controls textarea:focus {
     outline: 0;
 }
 
 .controls button {
     width: 100%;
-    
     background: white no-repeat center/50%;
 }
 
-.controls button:hover:not(.share) {
+.controls button:hover:not(.orange-btn) {
     border: 2px solid darkgrey;
 }
 
 .controls .move-up {
-    grid-area: up;
+    grid-area: move-up;
     background-image: url(../icons/up-arrow.png);
 }
 
 .controls .move-down {
-    grid-area: down;
+    grid-area: move-down;
     background-image: url(../icons/down-arrow.png);
 }
 
-.controls .choose-next {
-    grid-area: next;
+.controls .select-next {
+    grid-area: select-next;
     background-image: url(../icons/up-and-down-opposite-double-arrows-side-by-side.png);
 }
 
@@ -104,12 +99,12 @@ canvas {
     background-image: url(../icons/trash.png);
 }
 
-.controls .larger-font {
+.controls .enlarge-font {
     grid-area: larger;
     background-image: url(../icons/increase\ font\ -\ icon.png);
 }
 
-.controls .smaller-font {
+.controls .reduce-font {
     grid-area: smaller;
     background-image: url(../icons/decrease\ font\ -\ icon.png);
 }
@@ -129,10 +124,125 @@ canvas {
     background-image: url(../icons/align-to-right.png);
 }
 
-.controls .share {
+.controls .border-color-btn {
+    grid-area: border-color;
+    background-image: url(../icons/text\ stroke.png);
+}
+
+.controls .font-color-btn {
+    grid-area: font-color;
+    background-image: url(../icons/paint-board-and-brush.png);
+}
+
+.controls .choose-font {
+    grid-area: font;
+    width: 100%;
+}
+
+.Impact {
+    font-family: Impact;
+}
+
+.Asakim {
+    font-family: Asakim;
+}
+
+.controls .choose-color {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+}
+
+.controls .choose-color:hover {
+    cursor: pointer;
+}
+
+.controls .share-meme {
     grid-area: share;
+}
+
+.controls .save-meme {
+    grid-area: save;
+}
+
+.controls .remove-meme {
+    grid-area: remove-meme;
+    background-image: url(../icons/white-trash.png);
+}
+
+.controls .remove-meme:hover {
+    background-image: url(../icons/trash.png);
+}
+
+.controls .orange-btn {
     width: 100%;
     font-size: 1.4em;
     background-color: #ff7f00;
     color: white;
+}
+
+.controls .orange-btn:hover {
+    color: black;
+}
+
+.share-modal {
+    position: absolute;
+    width: 90%;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    z-index: 1;
+    padding: 20px;
+    animation-name: show-modal;
+    animation-duration: 1s;
+}
+
+@keyframes show-modal {
+    from {
+        top: -50%;
+    }
+    to {
+        top: 50%
+    }
+}
+
+.share-modal>* {
+    font-size: 1.1em;
+    display: block;
+    border-radius: 0.8em;
+}
+
+.share-modal .orange-btn {
+    color: white;
+    background-color: #ff7f00;
+    width: 50%;
+    min-width: 7em;
+    padding: 1em;
+    margin: 20px auto;
+    text-align: center;
+}
+
+.share-modal>*:hover {
+    color: black;
+}
+
+.share-modal .close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    margin: 10px;
+}
+
+.close-modal::after {
+    content: "\2715";
+}
+
+@media (min-width: 550px) {
+    .share-modal {
+        width: 50%;
+    }
+    .share-modal>* {
+        font-size: 1.4em;
+    }
 }
