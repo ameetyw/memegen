@@ -54,6 +54,7 @@ body {
 
 .main-layout {
     max-width: 900px;
+    padding: 20px;
 }
 
 .screen {
@@ -77,6 +78,7 @@ header {
 
 .logo {
     width: 133px;
+    cursor: pointer;
 }
 
 .menu-items {
@@ -111,6 +113,7 @@ header {
 
 .gallery, .saved-memes {
     background-color: #e3e3e3;
+    /* min-height: 60vh; */
 }
 
 .gallery-container, .memes-container {
@@ -147,7 +150,7 @@ header {
 .about {
     grid-template-columns: 1fr;
     gap: 10px;
-    margin: 30px;
+    margin: 30px auto;
     text-align: center;
 }
 

@@ -1,7 +1,7 @@
 'use strict'
 
 const gElCanvas = document.querySelector('canvas')
-const gSectionNames = ['gallery', 'editor', 'saved-memes']
+const gSectionNames = ['gallery', 'editor', 'saved-memes', 'about']
 const gTouchEvs = ['touchstart', 'touchmove', 'touchend']
 let gLastSelectedFont
 let gStartPos

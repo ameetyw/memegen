@@ -179,11 +179,3 @@ function saveMemeDataURL() {
 function getMemeDataURL() {
     return gMeme.dataURL
 }
-
-// function getLastMemeId() {
-//     return gMemeId
-// }
-
-// function setLastMemeId(id) {
-//     gMemeId = id
-// }

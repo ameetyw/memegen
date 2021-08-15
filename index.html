@@ -14,8 +14,7 @@
     <div class="screen" hidden></div>
     <header>
         <div class="header-container main-layout flex align-center">
-            <a href="#" onclick="onShowSection('gallery')"><img class="logo" src="icons/logo-2x.png"
-                    alt="memegen" /></a>
+            <img class="logo" src="icons/logo-2x.png" alt="memegen" onclick="onShowSection('gallery')" />
             <div class="menu-items flex">
                 <a href="#" onclick="onShowSection('gallery')">Gallery</a>
                 <a href="#" onclick="onShowSection('saved-memes')">Memes</a>
@@ -31,7 +30,7 @@
                 <div class="canvas-container">
                     <canvas></canvas>
                 </div>
-                <div class="controls">
+                <div class="controls grid justify-center">
                     <textarea rows="2" placeholder="Enter Text" oninput="onEditLine(this.value)"></textarea>
                     <button class="move-up" onclick="onMoveLineUp()"></button>
                     <button class="move-down" onclick="onMoveLineDown()"></button>

@@ -8,7 +8,7 @@ let gMemes
 function saveMemeToStorage() {
     const meme = getMeme()
     const memeIdx = findMemeIdx()
-    if (!memeIdx) gMemes.push(meme)
+    if (memeIdx < 0) gMemes.push(meme)
     else gMemes[memeIdx] = meme
     _saveMemesToStorage()
     saveToStorage(LAST_ID_DB, meme.id)
@@ -55,14 +55,7 @@ function onRemoveMeme() {
 
 function findMemeIdx() {
     const memeId = getMeme().id
-    let memeIdx = null
-    gMemes.find((meme, idx) => {
-        if (meme.id === memeId) {
-            memeIdx = idx
-            return true
-        }
-    })
-    return memeIdx
+    return gMemes.findIndex(meme => meme.id === memeId)
 }
 
 function getMemeById(memeId) {
