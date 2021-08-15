@@ -31,6 +31,11 @@ function onOpenNewMeme(imgId) {
 }
 
 function onShowSection(sectionName) {
+    if (sectionName === 'home') {
+        onShowSection('gallery')
+        document.querySelector('.about').classList.remove('hidden')
+        return
+    }
     gSectionNames.forEach(section => {
         const elSection = document.querySelector(`.${section}`)
         if (section === sectionName) {
@@ -147,7 +152,7 @@ function onSaveMeme() {
     const elSaveBtn = document.querySelector('.save-meme')
     elSaveBtn.innerText = 'Saved!'
     setTimeout(() => elSaveBtn.innerText = 'Save', 700)
-    saveMemeDataURL()
+    saveMeme()
     saveMemeToStorage()
 }
 
