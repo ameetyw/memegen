@@ -172,6 +172,12 @@ function isLineSelected() {
 
 /** save meme **/
 
+function saveMeme() {
+    gCurrLine = null
+    renderCanvas()
+    saveMemeDataURL()
+}
+
 function saveMemeDataURL() {
     gMeme.dataURL = getCanvas().toDataURL('image/jpeg')
 }
