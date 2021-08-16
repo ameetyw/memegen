@@ -152,7 +152,7 @@ function onSaveMeme() {
     const elSaveBtn = document.querySelector('.save-meme')
     elSaveBtn.innerText = 'Saved!'
     setTimeout(() => elSaveBtn.innerText = 'Save', 700)
-    saveMeme()
+    saveMemeDataURL() 
     saveMemeToStorage()
 }
 
