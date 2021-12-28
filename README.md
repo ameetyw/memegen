@@ -1,5 +1,5 @@
 # memegen - a meme generator!
-https://amiteew/github.io/memegen
+https://amiteew.github.io/memegen
 
 Second project in the Coding Academy training - completed in 2 days.
 Vanilla JS (MVC architecture), Canvas, HTML5, CSS3.
